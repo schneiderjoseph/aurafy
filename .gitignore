@@ -1,0 +1,44 @@
+# Secrets & env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Dependencies / build
+node_modules/
+dist/
+build/
+.next/
+.expo/
+coverage/
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+venv/
+.turbo/
+.pnpm-store/
+
+# Local outputs
+output/
+backups/
+*.dump
+*.log
+*.sqlite
+*.db
+
+# Media / uploads (never commit)
+uploads/
+.tmp/
