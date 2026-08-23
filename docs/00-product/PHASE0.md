@@ -40,9 +40,12 @@ AURAFY V0 = product definition + architecture + standards binding
 ## Sequence
 
 ```text
-V0 Spec (done) → V1 Foundation (auth, org, API, money, booking, social)
-              → V1 Vertical release (consumer loop + studio OS basic)
-              → Later: advanced payroll/inventory/accounting/reports UI
+V0 Spec (done)
+  → Design system + UI prototype (critical flows, mock + types)
+  → API contracts
+  → V1 Foundation (auth, org, money, booking, social, Resend jobs)
+  → Vertical release (consumer loop + studio OS basic)
+  → Later: advanced payroll/inventory/accounting/reports UI
 ```
 
 No stack re-decision in V0 beyond [STACK_DECISION.md](STACK_DECISION.md).

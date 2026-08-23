@@ -46,9 +46,9 @@ Agents: read [`AGENTS.md`](AGENTS.md) before any change.
 
 ## Now
 
-**AURAFY V0 — blueprint complete.** Vertical-slice delivery locked (consumer + studio foundations in parallel). Coherence review: **PASS** ([`docs/04-analysis/V0_COHERENCE_REVIEW.md`](docs/04-analysis/V0_COHERENCE_REVIEW.md)).
+**AURAFY V0 — blueprint complete** (+ design/brand direction locked). Next: **design system + UI prototype** of critical flows, then API contracts, then backend scaffold in parallel.
 
-**No application code yet.** Scaffolding starts only with explicit go-ahead.
+Coherence: [`docs/04-analysis/V0_COHERENCE_REVIEW.md`](docs/04-analysis/V0_COHERENCE_REVIEW.md).
 
 ---
 
@@ -115,6 +115,9 @@ Post → Book → Appointment → Completed → Sale → Payment (FX)
 | [API sketch](docs/06-api/API_SKETCH.md) | ✅ |
 | [Convex model](docs/06-api/CONVEX_MODEL.md) | ✅ |
 | [Notifications / Resend](docs/01-domain/NOTIFICATIONS_MODEL.md) | ✅ |
+| [Design principles](docs/07-design/DESIGN_PRINCIPLES.md) | ✅ |
+| [Brand](docs/07-design/BRAND.md) | ✅ |
+| [Surface map](docs/07-design/SURFACE_MAP.md) | ✅ |
 | [V0 coherence review](docs/04-analysis/V0_COHERENCE_REVIEW.md) | ✅ PASS |
 
 ---

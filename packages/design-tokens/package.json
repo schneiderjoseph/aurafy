@@ -1,0 +1,6 @@
+{
+  "name": "@aurafy/design-tokens",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AURAFY design tokens — colors, type, space, radius, motion"
+}

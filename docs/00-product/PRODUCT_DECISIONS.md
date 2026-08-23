@@ -237,4 +237,21 @@ Before scaffolding:
 - [x] NOTIFICATIONS_MODEL.md (Resend)
 - [x] V0_COHERENCE_REVIEW.md
 
-**V0 blueprint complete.** Application code starts only after explicit human go-ahead. First scaffold target: infrastructure + tenancy + identity + money (+ notification jobs), not flashy UI.
+**V0 blueprint complete.**  
+
+### Delivery after V0 (DECIDED)
+
+**UI-first + contract-first** — not backend-only, not throwaway screens.
+
+```text
+Design system (tokens + ui)
+  → UI prototype (~10–12 critical screens, mock + real types)
+  → Freeze API contracts against those flows
+  → Backend + DB scaffold (parallel OK)
+  → Wire real data → realtime / jobs
+```
+
+First visual priority: Feed · Studio profile · Post · Booking flow.  
+First eng priority alongside: tenancy · identity · money · Resend jobs — **not** flashy UI wired to empty CRUD.
+
+See [docs/07-design/](../07-design/).
