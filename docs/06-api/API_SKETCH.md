@@ -215,5 +215,6 @@ Breaking changes → `/v2`. Additive fields OK in `/v1` with care.
 ## Related
 
 - [DATA_BOUNDARIES.md](../01-domain/DATA_BOUNDARIES.md)
+- [NOTIFICATIONS_MODEL.md](../01-domain/NOTIFICATIONS_MODEL.md)
 - [PERMISSIONS_MODEL.md](../01-domain/PERMISSIONS_MODEL.md)
 - [BOOKING_MODEL.md](../01-domain/BOOKING_MODEL.md)
