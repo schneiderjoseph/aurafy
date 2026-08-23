@@ -177,8 +177,19 @@ Accounting      Journal entries, periods (foundation V1; full UI later)
 ## Reporting
 
 Org reports default to **base_currency**.  
-Drill-down shows original transaction currency.  
-FX gain/loss is OPEN for V1 (document gap, do not silently ignore).
+Drill-down shows original transaction currency.
+
+## FX gain / loss (DECIDED for V1 foundation)
+
+V1 **does not** require a full FX P&amp;L UI, but the model must not pretend FX differences do not exist.
+
+| Concept | V1 rule |
+|---|---|
+| **Realized FX** | When a multi-currency document is **settled** (e.g. sale in HTG paid in USD, or foreign balance closed), compute difference between expected base (at document rate) and payment base (at payment rate). Persist on the payment / settlement row as `fx_gain_loss_base_minor` (signed). Optional journal line later. |
+| **Unrealized FX** | Revaluation of open foreign balances at period end — **OUT of V1 UI**. Schema may reserve `revaluation_runs` later; do not silently revalue history. |
+| **Accounting** | Foundation: realized FX may post to a dedicated equity/P&amp;L account when journal entries are generated; until then, store on financial row + report in basic dashboard as “FX difference”. |
+
+Never overwrite historical rates to “fix” FX. Always snapshot.
 
 ---
 
@@ -186,3 +197,4 @@ FX gain/loss is OPEN for V1 (document gap, do not silently ignore).
 
 - [DOMAIN_MODEL.md](DOMAIN_MODEL.md)
 - [PRODUCT_DECISIONS.md](../00-product/PRODUCT_DECISIONS.md)
+- [NOTIFICATIONS_MODEL.md](NOTIFICATIONS_MODEL.md)

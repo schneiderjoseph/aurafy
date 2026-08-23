@@ -10,6 +10,8 @@
 
 **PASS — V0 blueprint is coherent enough to start V1 foundation code.**
 
+Corrections from post-review applied: FX realized rules, notifications split (Postgres jobs + Resend + Convex in-app), financial idempotence (AF-PAY), `customer_organizations` as first-class CRM, Resend in stack.
+
 No major product decisions remain open that would force a financial or tenancy rewrite. Residual OPENs are implementation choices (auth provider ADR-002, refund depth, per-line staff assignment default).
 
 ---
@@ -40,6 +42,11 @@ No major product decisions remain open that would force a financial or tenancy r
 | Check | Result |
 |---|---|
 | Locales FR + EN + HT (Kreyòl) from day one | ✓ |
+| FX realized on settlement; unrealized later | ✓ |
+| Notifications: Postgres jobs + Resend + Convex in-app | ✓ |
+| Financial idempotence (AF-PAY) | ✓ |
+| customer_organizations first-class CRM | ✓ |
+| Resend in stack for transactional email | ✓ |
 | Dual product (consumer + studio OS) reflected everywhere | ✓ |
 | Vertical slice phasing (not consumer-first) locked | ✓ |
 | Multi-currency P0 + rate snapshots | ✓ |
@@ -62,9 +69,10 @@ No major product decisions remain open that would force a financial or tenancy r
 | O1 | Auth provider: Supabase vs FastAPI-native | ADR-002 before login shipping |
 | O2 | Sale refund API depth in V1 | Decide when implementing sales |
 | O3 | Multi-service staff: one staff vs per-line | BOOKING_MODEL default = one staff/visit |
-| O4 | FX gain/loss reporting | MONEY_MODEL notes OPEN |
+| O4 | Unrealized FX revaluation UI | Out of V1; realized FX on settlement DECIDED in MONEY_MODEL |
 | O5 | Exact Free/Pro numeric limits | Configurable; not schema blockers |
 | O6 | Guest browse vs auth wall fine print | AUTH_MODEL: public read OK |
+| O7 | Studio marketing campaign UI | Infra + consent in V1; bulk send Growth |
 
 ---
 
@@ -81,12 +89,15 @@ No major product decisions remain open that would force a financial or tenancy r
 
 Allowed next (with human go-ahead):
 
-1. `git init` + remote (if desired)
-2. Monorepo scaffold: `services/api` (FastAPI skeleton), `apps/web`, `apps/mobile` placeholders, `packages/types`
-3. First Alembic migrations: users, orgs, memberships, money tables
-4. ADR-001 repo layout, ADR-002 auth
+1. Monorepo scaffold: `services/api`, `apps/web`, `apps/mobile`, `convex/`, `packages/{types,design-tokens,api-client,email}`
+2. First Alembic migrations: users, orgs, memberships, customer_organizations, currencies, exchange_rates, locations
+3. FastAPI `/v1` auth + orgs with **tenant isolation tests from day one**
+4. Notification worker skeleton + Resend adapter (no UI flash)
+5. ADR-001 repo layout, ADR-002 auth
 
-**Still forbidden until go-ahead:** pretending V0 is a runnable product; claiming production-ready.
+**First objective = infrastructure + tenancy + identity + money + notification jobs — not flashy UI.** Then vertical slice.
+
+**Still forbidden until go-ahead:** claiming production-ready.
 
 ---
 

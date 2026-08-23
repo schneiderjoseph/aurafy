@@ -38,6 +38,8 @@ Booking availability, commissions, plan limits, feed ranking inputs are pure fun
 
 Creates that can retry (offline outbox, flaky mobile, webhooks) carry an idempotency key / `mutation_id`. Replaying must not double-book or double-charge.
 
+**Financial commands are always idempotent (AF-PAY):** create payment, receive purchase, post payroll run, record expense, record inventory movement tied to money. A repeated request with the same idempotency key must not create a second financial transaction.
+
 ## AF-P6 — Declared policies, not hidden defaults (MUST)
 
 Cancellation window, deposit %, timezone, currency, valuation — explicit per organization/location with recorded values. Silent defaults are how trust dies.
@@ -46,9 +48,10 @@ Cancellation window, deposit %, timezone, currency, valuation — explicit per o
 
 | Store | Owns |
 |---|---|
-| **PostgreSQL** | Organizations, memberships, services, appointments, orders, payments, subscriptions, inventory, audit |
-| **Convex** | Posts, likes, comments, saves, follows, conversations, messages, realtime notifications |
+| **PostgreSQL** | Organizations, memberships, services, appointments, orders, payments, subscriptions, inventory, audit, **notification jobs / templates / consent / delivery state** |
+| **Convex** | Posts, likes, comments, saves, follows, conversations, messages, **in-app** notifications |
 | **R2** | Media bytes; metadata IDs live in Postgres/Convex |
+| **Resend** | Email transport only — not source of truth |
 
 Do not put ERP ledgers in Convex. Do not put chat history only in Postgres if realtime UX depends on Convex.
 

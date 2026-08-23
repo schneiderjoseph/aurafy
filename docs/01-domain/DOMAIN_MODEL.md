@@ -54,7 +54,7 @@ Bounded contexts for AURAFY. PostgreSQL holds authoritative state unless noted.
 | `money` | Currencies, exchange rates | Postgres |
 | `social` | Posts, likes, comments, saves, follows | Convex (+ Postgres refs) |
 | `messaging` | Conversations, messages | Convex |
-| `notifications` | Delivery queue, read state | Convex (+ Postgres for email/SMS jobs) |
+| `notifications` | Durable jobs, templates, consent, delivery | **Postgres**; in-app mirror → Convex |
 | `media` | Object keys, variants, visibility | Postgres metadata · R2 bytes |
 | `billing` | SaaS plans, subscriptions, entitlements | Postgres |
 | `reporting` | Read models / aggregates | Postgres (derived) |
@@ -85,16 +85,37 @@ organizations
 
 locations
   organization_id, address, city, lat, lng, …
-
-customer_organizations          // CRM bridge (many-to-many)
-  customer_id, organization_id, first_visit_at, last_visit_at, …
 ```
+
+### Customer ↔ Organization (first-class CRM)
+
+**Not** a thin join table. This is the studio’s CRM relationship to a platform user (or walk-in customer record).
+
+```text
+customer_organizations
+  id
+  organization_id
+  user_id?                 // null = walk-in / CRM-only, not yet registered
+  display_name, phone, email_snapshot?
+  first_visit_at, last_visit_at
+  total_visits, total_spent_base_minor
+  is_favorite, tags[], notes
+  marketing_consent_at?
+  created_at, updated_at
+```
+
+Rules:
+
+- One global `User` can have **N** `customer_organizations` (one per studio)
+- Appointments, sales, chat, reviews for a studio attach through this relationship (or resolve to it)
+- Org A never sees Org B’s CRM fields for the same person
+- Studio staff permissions apply to this org’s customers only
 
 ### Booking
 
 ```text
 appointments
-  organization_id, customer_id, location_id, status, starts_at, ends_at, …
+  organization_id, customer_organization_id, location_id, status, starts_at, ends_at, …
 
 appointment_services
   appointment_id, service_id, staff_id?, duration_minutes, price_snapshot, …
@@ -113,6 +134,14 @@ exchange_rates
 journal_entries · journal_lines   // accounting foundation
 ```
 
+### Notifications (see NOTIFICATIONS_MODEL.md)
+
+```text
+notification_templates · notification_events · notification_deliveries
+email_preferences · marketing_consents · email_suppressions
+booking_notification_settings
+```
+
 ---
 
 ## Convex entities (social / realtime)
@@ -122,7 +151,7 @@ posts · post_media · post_services
 likes · comments · saves
 follows
 conversations · conversation_members · messages
-notification_events
+notifications          // in-app only
 presence (optional)
 ```
 
@@ -134,13 +163,14 @@ Postgres holds stable IDs referenced by Convex (`organization_id`, `service_id`,
 
 ```text
 User 1──* organization_members *──1 Organization
-User 1──* customer_organizations *──1 Organization
+User 1──* customer_organizations *──1 Organization   // first-class CRM
 Organization 1──* locations
 Organization 1──* services
 Organization 1──* staff (via members + staff_profiles)
 Appointment *──* services (appointment_services)
+Appointment ──► customer_organizations
 Post (Convex) ──refs──► Organization, User, Service[], Media[]
-Conversation ──refs──► Organization + Customer/User
+Conversation ──refs──► Organization + customer User
 ```
 
 ---
@@ -176,4 +206,5 @@ On-hand = fold of movements (cache allowed, recomputable).
 
 - [MONEY_MODEL.md](MONEY_MODEL.md)
 - [DATA_BOUNDARIES.md](DATA_BOUNDARIES.md)
+- [NOTIFICATIONS_MODEL.md](NOTIFICATIONS_MODEL.md)
 - [MVP_SCOPE.md](../00-product/MVP_SCOPE.md)

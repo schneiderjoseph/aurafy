@@ -90,8 +90,9 @@ Post → Book → Appointment → Completed → Sale → Payment (FX)
 | Web (`apps/web`) | Consumer + Studio + Platform admin | Next.js · shadcn/ui |
 | Mobile (`apps/mobile`) | Consumer + Staff | Expo · gluestack-ui |
 | API (`services/api`) | All clients | FastAPI · `/v1` |
-| Social realtime (`convex/`) | Feed, chat, likes, notifies | Convex |
+| Social realtime (`convex/`) | Feed, chat, likes, in-app notifies | Convex |
 | Media | Photos / video | Cloudflare R2 |
+| Email | Transactional + consented marketing | **Resend** |
 
 ---
 
@@ -113,6 +114,7 @@ Post → Book → Appointment → Completed → Sale → Payment (FX)
 | [Permissions](docs/01-domain/PERMISSIONS_MODEL.md) | ✅ |
 | [API sketch](docs/06-api/API_SKETCH.md) | ✅ |
 | [Convex model](docs/06-api/CONVEX_MODEL.md) | ✅ |
+| [Notifications / Resend](docs/01-domain/NOTIFICATIONS_MODEL.md) | ✅ |
 | [V0 coherence review](docs/04-analysis/V0_COHERENCE_REVIEW.md) | ✅ PASS |
 
 ---

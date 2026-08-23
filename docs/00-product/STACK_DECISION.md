@@ -16,6 +16,8 @@
 | Auth | To be finalized in ADR-002 — lean Supabase Auth **or** FastAPI-issued sessions with Postgres; must support global users + org memberships |
 | Social / realtime | Convex |
 | Media | Cloudflare R2 |
+| Email | **Resend** — transactional + consented marketing; provider only |
+| Async jobs | Worker for notifications/reminders (start simple; Redis/queue when earned AF-P14) |
 | Cache / jobs | Redis **only when earned** (AF-P14); start with FastAPI background tasks / simple worker |
 | Monorepo | pnpm workspaces (JS) + `services/api` (Python) |
 | CI | GitHub Actions (production-app-standard templates) |
@@ -30,9 +32,20 @@ AURAFY is a **new architecture** built for multi-tenant, social discovery, and g
 - Clean domain modules and workers
 - Separates transactional ERP from Next.js UI concerns
 
+## Why Resend for email
+
+Transactional email is part of the product loop (booking confirmations, reminders, auth), not a marketing afterthought.
+
+- Resend = **provider** (send + delivery webhooks)
+- PostgreSQL = templates, preferences, consent, delivery state, retries
+- Convex = in-app realtime only
+- Booking/sale requests **must not await** Resend (async worker)
+
+Locales for templates: `fr`, `en`, `ht`. See [NOTIFICATIONS_MODEL.md](../01-domain/NOTIFICATIONS_MODEL.md).
+
 ## Why Convex for social
 
-Live queries for feed interactions, chat, and notifications without bolting a second websocket stack onto FastAPI for MVP social UX.
+Live queries for feed interactions, chat, and **in-app** notifications without bolting a second websocket stack onto FastAPI for MVP social UX.
 
 ## Why not Flutter
 

@@ -24,6 +24,8 @@ UI strings, emails, and notifications must be translatable in all three language
 
 Payment at launch (Haiti): **MonCash + cash**. Card/Stripe later. Booking engine must **not** depend on Stripe.
 
+**Email (V1):** Resend — transactional (auth, booking, reminders, receipts) + consented marketing. Async worker; Postgres owns delivery state. See [NOTIFICATIONS_MODEL.md](../01-domain/NOTIFICATIONS_MODEL.md).
+
 ---
 
 ## Identity & auth
@@ -232,6 +234,7 @@ Before scaffolding:
 - [x] PERMISSIONS_MODEL.md
 - [x] API_SKETCH.md
 - [x] CONVEX_MODEL.md
+- [x] NOTIFICATIONS_MODEL.md (Resend)
 - [x] V0_COHERENCE_REVIEW.md
 
-**V0 blueprint complete.** Application code starts only after explicit human go-ahead.
+**V0 blueprint complete.** Application code starts only after explicit human go-ahead. First scaffold target: infrastructure + tenancy + identity + money (+ notification jobs), not flashy UI.

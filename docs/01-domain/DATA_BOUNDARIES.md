@@ -9,9 +9,10 @@
 
 | Store | Role | Authority |
 |---|---|---|
-| **PostgreSQL** | Transactional + financial + CRM + booking | **Source of truth** for business |
-| **Convex** | Social graph, chat, live UI | **Source of truth** for realtime social |
+| **PostgreSQL** | Transactional + financial + CRM + booking + notification jobs | **Source of truth** for business |
+| **Convex** | Social graph, chat, in-app notify UI | **Source of truth** for realtime social |
 | **R2** | Binary media | **Source of truth** for file bytes |
+| **Resend** | Email transport | Provider only |
 | **Redis** | Cache/queue | Not in V0/V1 until earned (AF-P14) |
 
 ---
@@ -20,12 +21,14 @@
 
 ```text
 Users, memberships, organizations, locations
-Customers (CRM), staff, catalog, appointments
+Customers (customer_organizations CRM), staff, catalog, appointments
 Sales, payments, purchases, inventory, expenses, payroll
 Financial accounts, exchange rates, accounting foundation
 SaaS billing (plans, subscriptions, entitlements)
 Audit logs, idempotency keys, outbox (if used)
 Media metadata (id, org, visibility, r2_key, variants)
+Notification templates, events, deliveries, preferences, consents
+Booking notification settings
 ```
 
 Characteristics:
@@ -43,7 +46,7 @@ Characteristics:
 Posts, likes, comments, saves, follows
 Feed ranking inputs (engagement counters denormalized)
 Conversations, messages, typing/read receipts (optional)
-In-app notification fanout to connected clients
+In-app notification inbox (realtime)
 Optimistic social interactions
 ```
 
@@ -52,6 +55,16 @@ Characteristics:
 - Reactive queries for feed and chat
 - Optimistic updates for like/save/comment
 - Must not be sole store for money or booking truth
+
+---
+
+## Resend owns
+
+```text
+Email transport (API + delivery webhooks)
+```
+
+Not source of truth for reminder existence — that is `notification_deliveries` in Postgres.
 
 ---
 
