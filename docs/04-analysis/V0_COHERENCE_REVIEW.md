@@ -89,15 +89,15 @@ No major product decisions remain open that would force a financial or tenancy r
 
 Allowed next (with human go-ahead):
 
-1. Monorepo scaffold: `services/api`, `apps/web`, `apps/mobile`, `convex/`, `packages/{types,design-tokens,api-client,email}`
-2. First Alembic migrations: users, orgs, memberships, customer_organizations, currencies, exchange_rates, locations
-3. FastAPI `/v1` auth + orgs with **tenant isolation tests from day one**
-4. Notification worker skeleton + Resend adapter (no UI flash)
+1. **Design system** — `packages/design-tokens` (started) + `packages/ui` + docs/07-design
+2. **UI prototype** — surfaces in SURFACE_MAP (mock data, real TypeScript types)
+3. Freeze OpenAPI / contract stubs against booking + feed happy paths
+4. Parallel: FastAPI skeleton, Alembic (users, orgs, memberships, customer_organizations, money), Convex stub, Resend worker stub
 5. ADR-001 repo layout, ADR-002 auth
 
-**First objective = infrastructure + tenancy + identity + money + notification jobs — not flashy UI.** Then vertical slice.
+**Order:** UI-first + contract-first. First eng objective still includes tenancy + identity + money — not empty flashy pages without contracts.
 
-**Still forbidden until go-ahead:** claiming production-ready.
+**Still forbidden:** claiming production-ready.
 
 ---
 
